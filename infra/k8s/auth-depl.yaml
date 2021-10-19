@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: auth
-          image: us.gcr.io/infra-data-328220/auth
+          image: ziv3r/auth
 ---
 apiVersion: v1
 kind: Service
