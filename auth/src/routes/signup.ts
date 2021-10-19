@@ -14,6 +14,7 @@ router.post('/api/users/signup', [
         .isLength({min: 4, max:20})
         .withMessage('Password must be vetween 4 and 20 chars')
 ],async (req: Request, res: Response, next: NextFunction) => {
+    // check in wanted service if the user exist there
     try{    
         console.log("in happy flow")
         const errors = validationResult(req);
