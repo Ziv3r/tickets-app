@@ -1,7 +1,10 @@
 import express, {NextFunction, Request, Response} from 'express';
 import { body, validationResult } from 'express-validator';
 import { RequestValidationError } from '../errors/request-validation-error';
-import { DatabaseConnecitonError } from '../errors/database-connection-error';
+import {BadRequestError} from '../errors/bad-reqiest-error';
+import jwt from 'jsonwebtoken';
+import  {User} from '../models/user'
+import { validateExpressValidationRequest } from '../middlewares/express-validation-common';
 
 const router = express.Router();
 
@@ -13,21 +16,35 @@ router.post('/api/users/signup', [
         .trim()
         .isLength({min: 4, max:20})
         .withMessage('Password must be vetween 4 and 20 chars')
-],async (req: Request, res: Response, next: NextFunction) => {
+], validateExpressValidationRequest , async (req: Request, res: Response, next: NextFunction) => {
     // check in wanted service if the user exist there
     try{    
-        console.log("in happy flow")
-        const errors = validationResult(req);
-        
-        if(!errors.isEmpty()){
-            throw(new RequestValidationError(errors.array()))
-        }
-        
         const {email, password} = req.body; 
-        console.log("Creating a User")
-        throw new DatabaseConnecitonError("Error By My TEST ! ")
-        res.send({status:"succeasdasdasss!!!!"})
-    }
+        //check if the email is not exist already in the DB: 
+        const isUserExist = await User.findOne({email})
+        if(isUserExist){
+            console.log("Email in use")
+            throw new BadRequestError('User already exist');
+        }
+
+        //enter a new user in the DB 
+        const newUser = User.build({email, password});
+        await newUser.save();
+
+        // generate json web
+        
+        const userJwt = jwt.sign({
+            id: newUser.id,
+            email: newUser.email
+        }, process.env.JWT_KEY as string)
+
+        //store the jwt on the seesion object
+        req.session = {
+            jwt:userJwt
+        }
+
+        res.status(201).send(newUser);
+    } 
     catch(error){
          next(error) 
     }
