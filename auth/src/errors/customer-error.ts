@@ -3,9 +3,7 @@ export abstract class CustomError extends Error {
     
     constructor(message: string) { 
         super(message)
-
         Object.setPrototypeOf(this, CustomError.prototype)
-
     }
 
     abstract serializeError(): {message: string; field?: string}[];

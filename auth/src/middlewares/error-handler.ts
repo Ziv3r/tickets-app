@@ -11,7 +11,7 @@ interface ErrorToClient {
 export const errorHandler = (err: Error , req: Request, res: Response, next: NextFunction ) => {
 
     if(err instanceof CustomError ){ 
-       return res.status(err.statusCode).send( {erros: err.serializeError()})
+       return res.status(err.statusCode).send( {errors: err.serializeError()})
     }
 
     res.status(400).send(

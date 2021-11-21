@@ -20,17 +20,11 @@ router.post('/api/users/signin',[
     try{
     // get the email and the password 
     const {email, password } = req.body;
-    console.log('DEBUG 1')
-    console.log(email, password)
-
     // get the user from the mongo
     const user = await User.findOne({email});
     if(!user){
         throw new BadRequestError("User is not exist !")
     }
-
-    console.log('DEBUG 2')
-    console.log(user)
 
     // user is exist --> now check it with the compare function in the PASSWWORD class 
     // static async compare(storedPassword: string, suppliedPassword: string){
