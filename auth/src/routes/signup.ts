@@ -1,9 +1,9 @@
 import express, {NextFunction, Request, Response} from 'express';
 import { body, validationResult } from 'express-validator';
-import {BadRequestError} from '../errors/bad-reqiest-error';
+import {BadRequestError} from '@ziv-tickets/common';
 import jwt from 'jsonwebtoken';
 import  {User} from '../models/user'
-import { validateExpressValidationRequest } from '../middlewares/express-validation-common';
+import { validateExpressValidationRequest } from '@ziv-tickets/common';
 
 const router = express.Router();
 

@@ -3,8 +3,8 @@ import { Password } from '../services/password';
 import { body } from 'express-validator';
 import { User } from '../models/user';
 import jwt from 'jsonwebtoken';
-import { BadRequestError } from '../errors/bad-reqiest-error';
-import {validateExpressValidationRequest} from '../middlewares/express-validation-common';
+import { BadRequestError } from '@ziv-tickets/common';
+import {validateExpressValidationRequest} from '@ziv-tickets/common';
 
 const router = express.Router();
 
