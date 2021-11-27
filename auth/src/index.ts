@@ -8,14 +8,19 @@ const start = async () => {
             throw new Error('key for JWT is not configured!')
     }
 
+    if(!process.env.MONGO_URI){
+            throw new Error('mongo uri must be defined!')
+    }
+
     try{
-        await mongoose.connect('mongodb://auth-mongo-srv:27017/auth', )
+        await mongoose.connect(process.env.MONGO_URI)
+        console.log("CONNECTED TO MONGO")
     }catch(err){
         console.log(err);
     }
 
     app.listen(PORT, () => {
-    console.log(`app is sss onddddn ${PORT}`)
+    console.log(`app is listen on ${PORT}`)
     })
 }
 
