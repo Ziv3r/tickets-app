@@ -1,0 +1,61 @@
+openapi: "3.0.0"
+x-explorer-enabled: false
+info:
+  description: "Tickets app"
+  version: "1.0.0"
+  title: "Tickets API"
+servers:
+  - url: "https://localhost"
+
+tags:
+  - name: "tickets"
+    description: "ropa's business processes"
+
+paths:
+  api/tickets:
+    post:
+      tags:
+        - "tickets"
+      summary: "create new ticket"
+      description: "create new ticket"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/newTicket"
+      responses:
+        201:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/businessProcessResource"
+        400:
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+        409:
+          description: "Duplicate keys"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+        500:
+          description: "Failed operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+
+components:
+  schemas:
+    newTicket:
+       type: object
+        properties:
+          title:
+            type: string
+          type:
+            type: string
+
