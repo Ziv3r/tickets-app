@@ -1,18 +1,21 @@
-import express, { Request, Response} from 'express';
+import express, { Request, Response, NextFunction} from 'express';
 import { TicketMongo } from '../models/ticket'
 import { NotFoundError } from '@ziv-tickets/common'
 
 const router = express.Router();
 
-router.get('/api/tickets/:id', async (req:Request, res: Response) => {
-    const ticket = await TicketMongo.findById(req.params.id);
+router.get('/api/tickets/:id', async (req:Request, res: Response, next: NextFunction) => {
+    try{
+        const ticket = await TicketMongo.findById(req.params.id);
 
-    if(!ticket){
-        throw new NotFoundError();
+        if(!ticket){
+            throw new NotFoundError();
+        }
+
+        res.status(200).send(ticket);
+    }catch(err){
+        next(err)
     }
-
-    res.status(200).send(ticket);
-
 })
 
 

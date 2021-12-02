@@ -13,7 +13,7 @@ router.post('/api/tickets', requireAuth, [
     body('price')
         .notEmpty ()
         .isFloat({gt:0})
-        .withMessage('you must supply a price')
+        .withMessage('you must supply a price that greater than 0')
 ], validateExpressValidationRequest,async (req: Request, res: Response) => {
     const { title, price} = req.body;
     const ticket = TicketMongo.build({
