@@ -1,6 +1,7 @@
 import request from 'supertest';
 import { app } from '../../app'
 import * as authHelper from '../../test/auth-helper';
+import { natsWrapper } from '../../nats-wrapper'
 
 describe('update ticket', () => {
     it('should return 404 if ticket is not exist', async () => {
@@ -112,5 +113,6 @@ describe('update ticket', () => {
 
         expect(ticketResponse.body.title).toEqual('new-title')
         expect(ticketResponse.body.price).toEqual(20)
+        expect(natsWrapper.client.publish).toHaveBeenCalled()
      })
 })

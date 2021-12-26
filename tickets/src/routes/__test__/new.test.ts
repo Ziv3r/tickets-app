@@ -2,6 +2,7 @@ import request from 'supertest';
 import { app } from '../../app'
 import * as authHelper from '../../test/auth-helper';
 import { TicketMongo } from '../../models/ticket';
+import { natsWrapper } from '../../nats-wrapper'
 
 describe('test create new ticket', () => {
     it('helath check /api/tickets', async () => {
@@ -92,5 +93,29 @@ describe('test create new ticket', () => {
         expect(tickets[0].price).toEqual(10)
         expect(tickets[0].title).toEqual('some-title')
     
+    })
+
+    it('publishes an event', async() => {
+        let tickets = await TicketMongo.find({});
+        expect(tickets.length).toEqual(0)
+
+        const cookieHeader = await authHelper.signIn();
+
+        const response = await request(app)
+        .post('/api/tickets')
+        .set('Cookie', cookieHeader)
+        .send({
+            title: 'some-title',
+            price: 10
+        })
+        .expect(201);
+
+        tickets = await TicketMongo.find({});
+        expect(tickets.length).toEqual(1)
+        expect(tickets[0].price).toEqual(10)
+        expect(tickets[0].title).toEqual('some-title')
+
+        expect(natsWrapper.client.publish).toHaveBeenCalled()
+
     })
 })

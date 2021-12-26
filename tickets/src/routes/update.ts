@@ -2,6 +2,8 @@ import express, { Request, Response, NextFunction} from 'express';
 import { body } from 'express-validator';;
 import { TicketMongo } from '../models/ticket';
 import { requireAuth, NotFoundError, NotAuthorizedError, validateExpressValidationRequest  } from '@ziv-tickets/common'
+import { TicketUpdatedPublisher } from '../events/publishers/ticket-updated-publisher'
+import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
 
@@ -27,15 +29,20 @@ router.put('/api/tickets/:id', [
             throw new NotAuthorizedError();
         }
 
-        const newTicket = await TicketMongo.findOneAndUpdate({_id: req.params.id}, req.body);
+        const newTicket = await TicketMongo.findOneAndUpdate({_id: req.params.id}, req.body, { new: true});
+
+        new TicketUpdatedPublisher(natsWrapper.client).publish({
+            id: newTicket!._id,
+            title: newTicket!.title,
+            price: newTicket!.price,
+            userId: newTicket!.userId,
+        })    
 
         res.status(200).send(newTicket);
     }
     catch(err){
         next(err)
     }
-    
-
 })
 
 

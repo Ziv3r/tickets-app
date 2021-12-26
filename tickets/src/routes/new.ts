@@ -2,6 +2,8 @@ import express, { Request, Response} from 'express';
 import { requireAuth, validateExpressValidationRequest } from '@ziv-tickets/common'
 import { body } from 'express-validator';
 import { TicketMongo } from '../models/ticket'
+import { TicketCreatedPublisher } from '../events/publishers/ticket-created-publisher'
+import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
 
@@ -23,6 +25,12 @@ router.post('/api/tickets', requireAuth, [
   });
 
   await ticket.save()
+  await new TicketCreatedPublisher(natsWrapper.client).publish({
+      id: ticket.id,
+      title,
+      price,
+      userId: ticket.userId,
+  })
 
     res.status(201).send(ticket)
 });
