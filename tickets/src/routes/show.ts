@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.get('/api/tickets/:id', async (req:Request, res: Response, next: NextFunction) => {
     try{
+        console.log("DEBUG GET ALL TICKETS")
         const ticket = await TicketMongo.findById(req.params.id);
 
         if(!ticket){

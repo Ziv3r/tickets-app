@@ -2,8 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: tickets-depl
-  labels:
-    app: tickets
 spec:
   replicas: 1
   selector:
@@ -18,6 +16,14 @@ spec:
         - name: tickets
           image: ziv3r/tickets
           env:
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NATS_URL
+              value: "http://nats-srv:4222"
+            - name: NATS_CLUSTER_ID
+              value: ticketing
             - name: JWT_KEY
               valueFrom:
                 secretKeyRef:
@@ -25,15 +31,6 @@ spec:
                   key: JWT_KEY
             - name: MONGO_URI
               value: "mongodb://tickets-mongo-srv:27017/tickets"
-            - name: NATS_URI
-              value: "http://nats-srv:4222"
-            - name: NATS_CLUSTER_ID
-              value: ticketing
-            - name: NATS_CLIENT_ID
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
-
 ---
 apiVersion: v1
 kind: Service

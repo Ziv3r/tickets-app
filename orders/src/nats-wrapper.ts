@@ -11,7 +11,7 @@ class NatsWrapper {
     }
     
     connect(clustId: string, clientId: string, url: string){
-        this._client =  nats.connect(clustId, clientId, {url })
+        this._client =  nats.connect('ticketing', 'abc', {url })
 
         return new Promise<void> ((resolve, reject) => {
             this.client.on('connect', () => {
