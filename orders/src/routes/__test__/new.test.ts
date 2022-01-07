@@ -4,6 +4,7 @@ import { app } from '../../app';
 import { Order, OrderStatus } from '../../models/order';
 import { Ticket } from '../../models/ticket';
 import * as authHelper from '../../test/auth-helper';
+import { natsWrapper } from '../../nats-wrapper';
 
 describe('test create new ticket', () => {
     it('returns an error if the ticket does not exist', async () => {
@@ -58,4 +59,24 @@ describe('test create new ticket', () => {
             .send({ ticketId: ticket.id })
             .expect(201);
         });
+
+
+    it('reserves a ticket', async () => {
+        const cookieHeader = await authHelper.signIn();
+        const ticket = Ticket.build({
+            title: 'concert',
+            price: 20,
+        });
+        await ticket.save();
+
+        await request(app)
+            .post('/api/orders')
+            .set('Cookie', cookieHeader)
+            .send({ ticketId: ticket.id })
+            .expect(201);
+
+        expect(natsWrapper.client.publish).toHaveBeenCalled();
+    });
+
+
 });

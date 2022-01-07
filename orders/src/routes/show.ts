@@ -8,7 +8,7 @@ router.get('/api/orders/:orderId', requireAuth, async (req:Request, res: Respons
     try{
         const { orderId } = req.params;
         const order = await Order.findById(orderId).populate('ticket');
-
+            
         if(!order){
             throw new NotFoundError();
         }

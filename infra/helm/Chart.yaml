@@ -1,0 +1,14 @@
+apiVersion: v2
+appVersion: "3.0"
+description: Ticket's Helm Chart
+name: tickets_deployment
+version: 1.0.0
+maintainers:
+  - name: Ziv Halsband
+    email: zivhalsband@gmail.com
+  - name: Sahar hagbi
+    email: saharhagbi@gmail.com
+
+dependencies:
+  - name: tickets
+    repository: file://charts/tickets

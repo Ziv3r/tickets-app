@@ -4,6 +4,9 @@ import { body } from 'express-validator';
 import { Ticket } from '../models/ticket'
 import { Order } from '../models/order'
 import { OrderStatus } from '@ziv-tickets/common'
+import { OrderCreatedPublisher } from '../events/publishers/order-created-publisher';
+import { natsWrapper} from '../nats-wrapper'
+
 const router = express.Router();
 
 const EXPIRATION_WINDOW_SECONDS = 15 * 60;
@@ -16,8 +19,7 @@ router.post('/api/orders', requireAuth,
         .withMessage('TicketId must be provided')
 ],validateExpressValidationRequest, async (req:Request, res: Response, next: NextFunction) => {
     try{
-        console.log("HELLO Ziv3r !!")
-        const { ticketId} = req.body;
+        const { ticketId } = req.body;
             //find the ticket the user is trying to order
             const ticket = await Ticket.findById(ticketId);
             if(!ticket){
@@ -41,6 +43,18 @@ router.post('/api/orders', requireAuth,
             })
 
             await order.save();
+
+            //publish event
+            new OrderCreatedPublisher(natsWrapper.client).publish({
+                id: order.id,
+                status: OrderStatus.Created,
+                userId: order.userId,
+                expiresAt: order.expiresAt.toISOString(),
+                ticket: {
+                    id: ticket.id,
+                    price: ticket. price
+                }
+            })
             
             res.status(201).send(order);
     }catch(error){

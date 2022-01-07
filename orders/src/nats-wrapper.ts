@@ -1,6 +1,6 @@
-import nats, { Stan} from 'node-nats-streaming'
-
-class NatsWrapper {
+ import nats, { Stan} from 'node-nats-streaming'
+ 
+ class NatsWrapper {
     private _client?: Stan ;
 
     get client(): Stan {
@@ -11,7 +11,7 @@ class NatsWrapper {
     }
     
     connect(clustId: string, clientId: string, url: string){
-        this._client =  nats.connect('ticketing', 'abc', {url })
+        this._client =  nats.connect(clustId, clientId, {url })
 
         return new Promise<void> ((resolve, reject) => {
             this.client.on('connect', () => {
@@ -22,8 +22,6 @@ class NatsWrapper {
             this.client.on('error', (err) => {
               reject(err);
             })
-
-
         })
     }
 }

@@ -3,6 +3,7 @@ import { Order, OrderStatus } from './order';
 
 // An interface that describes the properits for the User 
 interface TicketAttrs {
+    id: string,
     title: string,
     price: number,
 }
@@ -38,8 +39,12 @@ const ticketSchema = new mongoose.Schema({
     }
 )
 
-ticketSchema.statics.build = (ticket: TicketAttrs): mongoose.Document => {
-    return new Ticket(ticket)
+ticketSchema.statics.build = (ticketAttrs: TicketAttrs): mongoose.Document => {
+    return new Ticket({
+        _id: ticketAttrs.id,
+        title: ticketAttrs.title,
+        price: ticketAttrs.price,
+    })
 };
 
 ticketSchema.methods.isReserved = async function () {
@@ -50,7 +55,6 @@ ticketSchema.methods.isReserved = async function () {
                 OrderStatus.Created,
                 OrderStatus.awaitingPayment,
                 OrderStatus.Complete
-                
             ]
         }
     })

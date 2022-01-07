@@ -17,7 +17,6 @@ router.post('/api/tickets', requireAuth, [
         .isFloat({gt:0})
         .withMessage('you must supply a price that greater than 0')
 ], validateExpressValidationRequest,async (req: Request, res: Response) => {
-    console.log("DEBUG tickets!")
     const { title, price} = req.body;
     const ticket = TicketMongo.build({
         title,
@@ -25,9 +24,7 @@ router.post('/api/tickets', requireAuth, [
         userId: req.currentUser!.id
   });
 
-console.log("DEBUG tickets1")
   await ticket.save()
-  console.log("DEBUG tickets2")
   await new TicketCreatedPublisher(natsWrapper.client).publish({
       id: ticket.id,
       title,

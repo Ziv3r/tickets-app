@@ -5,7 +5,6 @@ import { requireAuth } from '@ziv-tickets/common'
 const router = express.Router();
 
 router.get('/api/orders', requireAuth, async (req:Request, res: Response) => {
-    console.log("ZIV#R IS HERE!!!")
     const orders = await Order.find({userId: req.currentUser!.id}).populate('ticket');
     res.status(200).send(orders);
 })

@@ -1,7 +1,9 @@
 import express, { Request, Response, NextFunction} from 'express'
 import { Order } from '../models/order'
 import { NotAuthorizedError, NotFoundError, requireAuth, OrderStatus } from '@ziv-tickets/common'
-import { isNamedExportBindings } from 'typescript';
+import { OrderCancelledPublisher } from '../events/publishers/order-cancelled-publisher';
+import { natsWrapper} from '../nats-wrapper'
+
 
 const router = express.Router();
 
@@ -9,7 +11,7 @@ router.delete('/api/orders/:orderId', requireAuth, async (req:Request, res: Resp
     try{
         const { orderId } = req.params;
         
-        const order = await Order.findById(orderId);
+        const order = await Order.findById(orderId).populate('ticket');
         if(!order){
                 throw new NotFoundError();
         }
@@ -21,8 +23,14 @@ router.delete('/api/orders/:orderId', requireAuth, async (req:Request, res: Resp
         order.status = OrderStatus.Cancelled
         await order.save();
         
-        console.log("Ziv3r check")
-        console.log(order)
+        //publish order cancel event:
+        new OrderCancelledPublisher(natsWrapper.client).publish({
+            id: order.id,
+            ticket: {
+                id: order.ticket.id,
+            }
+        })
+
         res.status(204).send(order);
 
     }catch(error){
