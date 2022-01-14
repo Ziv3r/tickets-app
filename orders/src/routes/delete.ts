@@ -17,7 +17,7 @@ router.delete('/api/orders/:orderId', requireAuth, async (req:Request, res: Resp
         }
         
         if(order.userId !== req.currentUser!.id){
-            throw new NotAuthorizedError();        
+            throw new NotAuthorizedError();
         }
 
         order.status = OrderStatus.Cancelled
@@ -26,6 +26,7 @@ router.delete('/api/orders/:orderId', requireAuth, async (req:Request, res: Resp
         //publish order cancel event:
         new OrderCancelledPublisher(natsWrapper.client).publish({
             id: order.id,
+            version: order.version,
             ticket: {
                 id: order.ticket.id,
             }

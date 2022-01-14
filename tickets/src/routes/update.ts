@@ -28,17 +28,23 @@ router.put('/api/tickets/:id', [
         if(ticket.userId !== req.currentUser?.id){
             throw new NotAuthorizedError();
         }
+        
+        ticket.set({
+            title: req.body.title,
+            price: req.body.price,
+        })
 
-        const newTicket = await TicketMongo.findOneAndUpdate({_id: req.params.id}, req.body, { new: true});
+        await ticket.save();
 
         new TicketUpdatedPublisher(natsWrapper.client).publish({
-            id: newTicket!._id,
-            title: newTicket!.title,
-            price: newTicket!.price,
-            userId: newTicket!.userId,
+            id: ticket._id,
+            version: ticket.version,
+            title: ticket.title,
+            price: ticket.price,
+            userId: ticket.userId,
         })    
 
-        res.status(200).send(newTicket);
+        res.status(200).send(ticket);
     }
     catch(err){
         next(err)
