@@ -26,6 +26,7 @@ describe('test create new ticket', () => {
     it('returns an error if the ticket is already reserved', async () => {
         const cookieHeader = await authHelper.signIn();
         const ticket = Ticket.build({
+            id: new mongoose.Types.ObjectId().toHexString(),
             title: 'concert',
             price: 20,
         });
@@ -48,6 +49,7 @@ describe('test create new ticket', () => {
     it('reserves a ticket', async () => {
         const cookieHeader = await authHelper.signIn();
         const ticket = Ticket.build({
+            id: new mongoose.Types.ObjectId().toHexString(),
             title: 'concert',
             price: 20,
         });
@@ -64,6 +66,7 @@ describe('test create new ticket', () => {
     it('reserves a ticket', async () => {
         const cookieHeader = await authHelper.signIn();
         const ticket = Ticket.build({
+            id: new mongoose.Types.ObjectId().toHexString(),
             title: 'concert',
             price: 20,
         });

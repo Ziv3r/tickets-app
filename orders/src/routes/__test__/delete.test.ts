@@ -4,11 +4,13 @@ import { Ticket } from '../../models/ticket'
 import { Order, OrderStatus } from '../../models/order'
 import * as authHelper from '../../test/auth-helper';
 import { natsWrapper } from '../../nats-wrapper'
+import mongoose from 'mongoose';
 
 describe('delete order', () => {
 
     const buildTicket = async () => {
         const ticket = Ticket.build({
+            id: new mongoose.Types.ObjectId().toHexString(),
             title: 'concert',
             price: 20
         }) 

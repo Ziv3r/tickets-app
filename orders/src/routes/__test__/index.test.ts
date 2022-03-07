@@ -3,12 +3,12 @@ import { app } from '../../app';
 import { Ticket } from '../../models/ticket'
 import { Order } from '../../models/order'
 import * as authHelper from '../../test/auth-helper';
+import mongoose from 'mongoose';
 
-
-describe('get orders for user', () => {
 
     const buildTicket = async () => {
         const ticket = Ticket.build({
+            id: new mongoose.Types.ObjectId().toHexString(),
             title: 'concert',
             price: 20
         }) 
@@ -58,4 +58,3 @@ describe('get orders for user', () => {
         expect(resp.body[1].id).toEqual(orderTwo.id);
         // make sure we only got the orders for usr #2
     })
-})
