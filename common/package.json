@@ -1,6 +1,6 @@
 {
-  "name": "@ziv-tickets/common",
-  "version": "1.0.8",
+  "name": "@zivhals-tickets/common",
+  "version": "1.0.9",
   "description": "",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",

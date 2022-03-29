@@ -4,8 +4,8 @@ import mongoose from 'mongoose';
 export const signIn = async () => {
 
     const payload = {
-    id: new mongoose.Types.ObjectId().toHexString(),
-    email: 'test@test.com'
+        id: new mongoose.Types.ObjectId().toHexString(),
+        email: 'test@test.com'
     } 
     
    const token = jwt.sign(payload, process.env.JWT_KEY as string)
