@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction} from 'express';
 import { body } from 'express-validator';;
 import { TicketMongo } from '../models/ticket';
-import { requireAuth, NotFoundError, NotAuthorizedError, validateExpressValidationRequest  } from '@ziv-tickets/common'
+import { requireAuth, NotFoundError, NotAuthorizedError, validateExpressValidationRequest, BadRequestError  } from '@zivhals-tickets/common'
 import { TicketUpdatedPublisher } from '../events/publishers/ticket-updated-publisher'
 import { natsWrapper } from '../nats-wrapper';
 
@@ -27,6 +27,10 @@ router.put('/api/tickets/:id', [
         //compare userID from cookie to userID on ticker obj:
         if(ticket.userId !== req.currentUser?.id){
             throw new NotAuthorizedError();
+        }
+
+        if(ticket.orderId){
+            throw new BadRequestError("Ticket is reserved")
         }
         
         ticket.set({

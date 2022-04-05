@@ -1,5 +1,5 @@
 import express, { Request, Response} from 'express';
-import { requireAuth, validateExpressValidationRequest } from '@ziv-tickets/common'
+import { requireAuth, validateExpressValidationRequest } from '@zivhals-tickets/common'
 import { body } from 'express-validator';
 import { TicketMongo } from '../models/ticket'
 import { TicketCreatedPublisher } from '../events/publishers/ticket-created-publisher'

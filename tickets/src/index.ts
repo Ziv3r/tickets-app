@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import { app } from './app';
 import { natsWrapper } from './nats-wrapper';
+import { OrderCancelledListener } from './events/listeners/order-cancelled-listener'
+import { OrderCreatedListener } from './events/listeners/order-created-listener'
 
 const start = async () => {
   if (!process.env.JWT_KEY) {
@@ -20,8 +22,6 @@ const start = async () => {
   }
 
   try {
-
-    console.log("TICKETS PRINT FOR DEBUG !!!!")
     console.log(process.env.NATS_CLIENT_ID)
 
     await natsWrapper.connect(
@@ -38,6 +38,10 @@ const start = async () => {
   } catch (err) {
     console.error(err);
   }
+
+  new OrderCreatedListener(natsWrapper.client).listen()
+  new OrderCancelledListener(natsWrapper.client).listen()
+  
 
   try{
     await mongoose.connect(process.env.MONGO_URI);

@@ -1,7 +1,10 @@
 import request from 'supertest';
 import { app } from '../../app'
 import * as authHelper from '../../test/auth-helper';
+import mongoose from 'mongoose';
+import { TicketMongo } from '../../models/ticket'
 import { natsWrapper } from '../../nats-wrapper'
+import { TicketCreatedPublisher } from '../../events/publishers/ticket-created-publisher';
 
 describe('update ticket', () => {
     it('should return 404 if ticket is not exist', async () => {
@@ -114,5 +117,32 @@ describe('update ticket', () => {
         expect(ticketResponse.body.title).toEqual('new-title')
         expect(ticketResponse.body.price).toEqual(20)
         expect(natsWrapper.client.publish).toHaveBeenCalled()
+     })
+
+     it('rejects updates if the ticket is reserved', async () => {
+        let cookieHeader = await authHelper.signIn(); // generat new cookie for pretend diffrent user
+
+        const response = await request(app)
+            .post('/api/tickets')
+            .set('Cookie', cookieHeader)
+            .send({
+                title: 'some-title',
+                price: 10
+            })
+            .expect(201);
+        
+            const ticket = await TicketMongo.findById(response.body.id);
+            ticket!.set({orderId: new mongoose.Types.ObjectId().toHexString()});
+            await ticket!.save()
+
+
+        await request(app)
+            .put(`/api/tickets/${response.body.id}`)
+            .set('Cookie', cookieHeader)
+            .send({
+                title: 'new-title',
+                price: 20
+            })
+            .expect(400)
      })
 })

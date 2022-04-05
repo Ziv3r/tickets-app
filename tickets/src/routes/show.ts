@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction} from 'express';
 import { TicketMongo } from '../models/ticket'
-import { NotFoundError } from '@ziv-tickets/common'
+import { NotFoundError } from '@zivhals-tickets/common'
 
 const router = express.Router();
 
