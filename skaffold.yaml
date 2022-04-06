@@ -43,3 +43,12 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: .
+
+    - image: ziv3r/expiration
+      context: expiration
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .

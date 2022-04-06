@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction} from 'express'
 import { Order } from '../models/order'
-import { NotAuthorizedError, NotFoundError, requireAuth, OrderStatus } from '@ziv-tickets/common'
+import { NotAuthorizedError, NotFoundError, requireAuth, OrderStatus } from '@zivhals-tickets/common'
 import { OrderCancelledPublisher } from '../events/publishers/order-cancelled-publisher';
 import { natsWrapper} from '../nats-wrapper'
 

@@ -1,4 +1,4 @@
-import { Publisher, OrderCancelledEvent, Subjects } from '@ziv-tickets/common' 
+import { Publisher, OrderCancelledEvent, Subjects } from '@zivhals-tickets/common' 
 
 export class OrderCancelledPublisher extends Publisher<OrderCancelledEvent>{
     subject: Subjects.OrderCancelled = Subjects.OrderCancelled;  

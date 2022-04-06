@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { OrderStatus } from '@ziv-tickets/common'
+import { OrderStatus } from '@zivhals-tickets/common'
 import { TicketDoc } from './ticket';
 import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 

@@ -3,8 +3,7 @@ import { Password } from '../services/password';
 import { body } from 'express-validator';
 import { User } from '../models/user';
 import jwt from 'jsonwebtoken';
-import { BadRequestError } from '@ziv-tickets/common';
-import {validateExpressValidationRequest} from '@ziv-tickets/common';
+import { BadRequestError, validateExpressValidationRequest } from '@zivhals-tickets/common';
 
 const router = express.Router();
 

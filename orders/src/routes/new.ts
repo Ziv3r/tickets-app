@@ -1,9 +1,8 @@
 import express, { Request, Response, NextFunction} from 'express'
-import { NotFoundError, requireAuth, validateExpressValidationRequest, BadRequestError} from '@ziv-tickets/common'
+import { NotFoundError, requireAuth, validateExpressValidationRequest, BadRequestError, OrderStatus} from '@zivhals-tickets/common'
 import { body } from 'express-validator';
 import { Ticket } from '../models/ticket'
 import { Order } from '../models/order'
-import { OrderStatus } from '@ziv-tickets/common'
 import { OrderCreatedPublisher } from '../events/publishers/order-created-publisher';
 import { natsWrapper} from '../nats-wrapper'
 

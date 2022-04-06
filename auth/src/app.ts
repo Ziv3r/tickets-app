@@ -7,8 +7,7 @@ import {currentUserRouter} from './routes/current-user';
 import {signinRouter} from './routes/signin';
 import {signoutRouter} from './routes/signout';
 import {signupRouter} from './routes/signup';
-import { errorHandler } from '@ziv-tickets/common';
-import {NotFoundError} from '@ziv-tickets/common'
+import { errorHandler, NotFoundError } from '@zivhals-tickets/common';
 
 const app = express();
 app.set('trust proxy', true);

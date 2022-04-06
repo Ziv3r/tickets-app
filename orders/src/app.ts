@@ -1,7 +1,7 @@
 import express from 'express';
 import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
-import { errorHandler, NotFoundError, currentUser  } from '@ziv-tickets/common';
+import { errorHandler, NotFoundError, currentUser  } from '@zivhals-tickets/common';
 
 import { indexOrdersRouter } from './routes/index'
 import { showOrdersRouter } from './routes/show';

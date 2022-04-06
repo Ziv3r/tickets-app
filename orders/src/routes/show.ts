@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction} from 'express'
 import { Order } from '../models/order'
-import { NotAuthorizedError, NotFoundError, requireAuth } from '@ziv-tickets/common'
+import { NotAuthorizedError, NotFoundError, requireAuth } from '@zivhals-tickets/common'
 
 const router = express.Router();
 

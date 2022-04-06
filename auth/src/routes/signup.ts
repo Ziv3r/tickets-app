@@ -1,9 +1,8 @@
 import express, {NextFunction, Request, Response} from 'express';
 import { body, validationResult } from 'express-validator';
-import {BadRequestError} from '@ziv-tickets/common';
+import {BadRequestError, validateExpressValidationRequest} from '@zivhals-tickets/common';
 import jwt from 'jsonwebtoken';
 import  {User} from '../models/user'
-import { validateExpressValidationRequest } from '@ziv-tickets/common';
 
 const router = express.Router();
 
@@ -18,6 +17,7 @@ router.post('/api/users/signup', [
 ], validateExpressValidationRequest , async (req: Request, res: Response, next: NextFunction) => {
     // check in wanted service if the user exist there
     try{    
+        console.log("sign up router!")
         const {email, password} = req.body; 
         //check if the email is not exist already in the DB: 
         const isUserExist = await User.findOne({email})

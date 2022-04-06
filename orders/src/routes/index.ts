@@ -1,6 +1,6 @@
 import express, { Request, Response} from 'express'
 import { Order } from '../models/order'
-import { requireAuth } from '@ziv-tickets/common'
+import { requireAuth } from '@zivhals-tickets/common'
 
 const router = express.Router();
 
