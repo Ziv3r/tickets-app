@@ -1,0 +1,23 @@
+{
+  "name": "tickets-app",
+  "version": "1.0.0",
+  "description": "tickets app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ziv3r/tickets-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ziv3r/tickets-app/issues"
+  },
+  "homepage": "https://github.com/Ziv3r/tickets-app#readme",
+  "devDependencies": {
+    "prettier": "2.6.2"
+  }
+}
