@@ -24,7 +24,7 @@ spec:
                         service:
                             name: payments-srv
                             port:
-                            number: 10000
+                                number: 10000
 
                   - path: /api/tickets/?(.*)
                     pathType: Prefix
@@ -33,6 +33,7 @@ spec:
                             name: tickets-srv
                             port:
                                 number: 10000
+
                   - path: /api/orders/?(.*)
                     pathType: Prefix
                     backend:
@@ -40,6 +41,7 @@ spec:
                             name: orders-srv
                             port:
                                 number: 10000
+
                   - path: /?(.*)
                     pathType: Prefix
                     backend:

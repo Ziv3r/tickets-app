@@ -1,5 +1,5 @@
 import { natsWrapper } from "../../../src/nats-wrapper";
-import { OrderCreatedListener } from "../order-cancelled-listener";
+import { OrderCancelledListener } from "../order-cancelled-listener";
 import {
     OrderCancelledEvent,
     OrderCreatedEvent,
@@ -9,7 +9,7 @@ import mongoose from "mongoose";
 import { Order } from "../../../src/models/order";
 
 const setup = async () => {
-    const listener = new OrderCreatedListener(natsWrapper.client);
+    const listener = new OrderCancelledListener(natsWrapper.client);
 
     const order = Order.build({
         id: new mongoose.Types.ObjectId().toHexString(),
