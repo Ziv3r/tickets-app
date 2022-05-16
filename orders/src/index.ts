@@ -4,6 +4,7 @@ import { natsWrapper } from "./nats-wrapper";
 import { TicketCreatedListener } from "./events/listeneres/ticket-created-listener";
 import { TicketUpdatedListener } from "./events/listeneres/ticket-updated-listener";
 import { ExpirationCompleteListener } from "./events/listeneres/expiration-complete-listener";
+import { PaymentCreatedListener } from "./events/listeneres/payment-created-listener";
 
 const PORT = 10000;
 
@@ -46,6 +47,7 @@ const start = async () => {
         new TicketCreatedListener(natsWrapper.client).listen();
         new TicketUpdatedListener(natsWrapper.client).listen();
         new ExpirationCompleteListener(natsWrapper.client).listen();
+        new PaymentCreatedListener(natsWrapper.client).listen();
 
         await mongoose.connect(process.env.MONGO_URI);
         console.log("CONNECTED TO MONGO");
